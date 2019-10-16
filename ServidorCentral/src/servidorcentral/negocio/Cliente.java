@@ -1,4 +1,4 @@
-package agenciaviajes.negocio;
+package servidorcentral.negocio;
 
 /**
  *
@@ -95,6 +95,5 @@ public class Cliente {
 
     public void setSexo(String sexo) {
         this.sexo = sexo;
-    }
-    
+    }   
 }

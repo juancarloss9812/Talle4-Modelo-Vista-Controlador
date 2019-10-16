@@ -1,4 +1,3 @@
-
 package agenciaviajes.negocio;
 
 import java.sql.Connection;
@@ -12,26 +11,31 @@ import java.sql.Statement;
  *
  * @author Libardo, Ricardo, Julio
  */
-public class ConectorJdbc {
+public class conectorServidor {
 
     private Connection cn;
     private ResultSet rs;
     private Statement st;
-    private final String URL = "jdbc:hsqldb:file:C:\\Users\\HP\\Desktop\\Taller4-cliente-servidor\\AgenciaViajes\\bd\\clientes;hsqldb.lock_file=false";
+    private final String URL = "jdbc:hsqldb:file:C:\\Users\\HP\\Desktop\\Taller4-cliente-servidor\\ServidorCentral\\bd\\servidorCentral;hsqldb.lock_file=false";
     //Cambie la URL de su bd local, por ejemplo, si tiene Windows,sería algo como:
     //private final String URL = "jdbc:hsqldb:file:C:\\clientes\\bd\\clientes;hsqldb.lock_file=false";
     
     private final String USER = "sa";
     private final String PASSWORD = "123";
 
-    public ConectorJdbc() {
-
+    public conectorServidor() {
+        
     }
 
     public void conectarse() throws ClassNotFoundException, SQLException {
         Class.forName("org.hsqldb.jdbcDriver");
         cn = DriverManager.getConnection(URL, USER, PASSWORD);
     }
+    public void actualizar(String sql) throws SQLException {
+        st = cn.createStatement();
+        st.executeUpdate(sql);
+    }
+    
 
     /**
      * Ejecuta una consulta de tipo select
@@ -43,16 +47,6 @@ public class ConectorJdbc {
         rs = st.executeQuery(sql);
     }
 
-    /**
-     * Ejecuta una consulta de tipo insert, update o delete
-     *
-     * @param sql
-     * @throws SQLException
-     */
-    public void actualizar(String sql) throws SQLException {
-        st = cn.createStatement();
-        st.executeUpdate(sql);
-    }
     /**
      * Cierra las variables de rs, st y cn que estén abiertas
      * @throws SQLException 

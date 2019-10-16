@@ -4,8 +4,7 @@ import agenciaviajes.negocio.GestorClientes;
 import agenciaviajes.presentacion.GUIClientes;
 import agenciaviajes.presentacion.GUIClientesController;
 import agenciaviajes.presentacion.GUIClientesVer;
-import agenciaviajes.presentacion.GUIEstadisticaPorSexo;
-//import agenciaviajes.presentacion.GUIEstadisticaPorSexoGrafica;
+import agenciaviajes.presentacion.GUIEstadisticaPorSexoGrafica;
 
 /**
  * Es el pegamento de la aplición
@@ -28,20 +27,19 @@ public class RunMVC {
         gestor.addView(view2);
         gestor.notificar(); // Para que se cargue los clientes al cargar la ventana
         view2.setVisible(true);
-         
-        // TERCERA VISTA
-        GUIEstadisticaPorSexo view3 = new GUIEstadisticaPorSexo();
-        gestor.addView(view3);
-        gestor.notificar(); // Para que se cargue los clientes al cargar la ventana
-        view3.setVisible(true);
         
-        
+
         // Enlaza el action controller de los botones al controlador y fija el comando de acción
         view1.getBtnGrabar().addActionListener(control);
         view1.getBtnGrabar().setActionCommand("GRABAR");
 
         view1.getBtnEliminar().addActionListener(control);
         view1.getBtnEliminar().setActionCommand("ELIMINAR");
-
+        
+        // TERCERA VISTA
+        GUIEstadisticaPorSexoGrafica view3 = new GUIEstadisticaPorSexoGrafica();
+        gestor.addView(view3);
+        gestor.notificar();
+        view3.setVisible(true);
     }
 }

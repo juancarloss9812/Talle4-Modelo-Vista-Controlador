@@ -40,6 +40,7 @@ public class GUIClientesController extends AActionController {
                     if (vista.getAccion().equals("AGREGAR")) {
                         //AGREGAR
                         agregarCliente();
+                        agregarClienteCopia();
 
                     } else {
                         editarCliente();
@@ -62,6 +63,15 @@ public class GUIClientesController extends AActionController {
             Utilidades.mensajeError("Error al agregar el cliente", "Atención");
         }
         Utilidades.mensajeExito("Empleado agregado con éxito", "Atención");
+    }
+    private void agregarClienteCopia() {
+        try {
+            gestor.copiarCliente(vista.getId(), vista.getNombres(), vista.getApellidos(), vista.getDireccion(), vista.getCelular(), vista.getEmail(), vista.getSexo());
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(GUIClientesController.class.getName()).log(Level.SEVERE, null, ex);
+            Utilidades.mensajeError("Error al realizar la copia en la BD", "Atención");
+        }
+        Utilidades.mensajeExito("Copia agregado con éxito", "Atención");
     }
 
     private void editarCliente() {

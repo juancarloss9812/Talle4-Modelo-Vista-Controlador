@@ -1,11 +1,12 @@
 package agenciaviajes.negocio;
 
-import agenciaviajes.acceso.ServicioRegistraduriaSocket;
 import java.util.ArrayList;
 import mvcf.AModel;
 import com.google.gson.Gson;
 import java.sql.SQLException;
 import java.util.Properties;
+import agenciaviajes.acceso.ServicioRegistraduriaSocket;
+import agenciaviajes.acceso.servicioServidor;
 import agenciaviajes.acceso.IRegistraduria;
 
 /**
@@ -15,14 +16,18 @@ import agenciaviajes.acceso.IRegistraduria;
  * @author Julio, Libardo, Ricardo
  */
 public class GestorClientes extends AModel {
-    private int totalMujeres;
-    private int totalHombres;
+    private final servicioServidor servidor;
     private final IRegistraduria registraduria;
     private ConectorJdbc conector;
+    private conectorServidor conectorServidor;
+    private int totalHombres;
+    private int totalMujeres;
 
     public GestorClientes() {
         registraduria = new ServicioRegistraduriaSocket();
+        servidor = new servicioServidor();
         conector = new ConectorJdbc();
+        conectorServidor = new conectorServidor();
     }
 
     /**
@@ -33,28 +38,25 @@ public class GestorClientes extends AModel {
      * @throws java.sql.SQLException
      */
     public ArrayList<Cliente> consultarClientes() throws ClassNotFoundException, SQLException {
-        totalHombres=0;
-        totalMujeres=0;
+
         conector.conectarse();
         conector.crearConsulta("SELECT * FROM clientes");
 
         ArrayList<Cliente> clientes = new ArrayList();
-
+        this.totalHombres = 0;
+        this.totalMujeres = 0;
         while (conector.getResultado().next()) {
             Cliente cli = new Cliente(conector.getResultado().getString("id"), conector.getResultado().getString("nombres"), conector.getResultado().getString("apellidos"), conector.getResultado().getString("direccion"), conector.getResultado().getString("celular"), conector.getResultado().getString("email"), conector.getResultado().getString("sexo"));
             clientes.add(cli);
             if (conector.getResultado().getString("sexo").equalsIgnoreCase("Masculino")){
-                totalHombres++;
+                this.totalHombres++;
             }else{
-               totalMujeres++;
-
+                this.totalMujeres++;
             }
         }
         conector.desconectarse();
         return clientes;
-
     }
-   
 
     /**
      * Busca un cliente en el servidor remoto de la registraduría
@@ -139,10 +141,23 @@ public class GestorClientes extends AModel {
                 + "'" + sexo + "'"
                 + ")");
         conector.desconectarse();
-
         this.notificar();
     }
-
+    public void copiarCliente(String id, String nombres, String apellidos, String direccion, String celular, String email, String sexo) throws ClassNotFoundException, SQLException {
+        conectorServidor.conectarse();
+        conectorServidor.actualizar("INSERT INTO SERVIDORCENTRAL (id, nombres, apellidos, direccion, celular, email, sexo)"
+                + " VALUES ("
+                + "'" + id + "',"
+                + "'" + nombres + "',"
+                + "'" + apellidos + "',"
+                + "'" + direccion + "',"
+                + "'" + celular + "',"
+                + "'" + email + "',"
+                + "'" + sexo + "'"
+                + ")");
+        conectorServidor.desconectarse();
+        this.notificar();
+    }
     /**
      * Edita un cliente en la base de datos
      *
@@ -189,10 +204,10 @@ public class GestorClientes extends AModel {
     }
     
     public int getTotalHombres(){
-        return totalHombres;
+        return this.totalHombres;
     }
     
     public int getTotalMujeres(){
-        return totalMujeres; 
+        return this.totalMujeres;
     }    
 }

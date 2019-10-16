@@ -30,7 +30,7 @@ public class GUIClientes extends javax.swing.JFrame implements AView {
         initComponents();
 
         setSize(870, 500);
-        setLocation(50, 250);
+        setLocation(50, 300);
 
         fijarMensajeExplicacion();
 
@@ -149,6 +149,11 @@ public class GUIClientes extends javax.swing.JFrame implements AView {
 
         btnGrabar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/grabar.png"))); // NOI18N
         btnGrabar.setText("Grabar");
+        btnGrabar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGrabarActionPerformed(evt);
+            }
+        });
         pnlSur.add(btnGrabar);
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/remove.png"))); // NOI18N
@@ -278,6 +283,10 @@ public class GUIClientes extends javax.swing.JFrame implements AView {
         }
 
     }//GEN-LAST:event_txtIdFocusLost
+
+    private void btnGrabarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGrabarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGrabarActionPerformed
 
     private void fijarCamposFormulario(Cliente cli) {
         txtNombres.setText(cli.getNombres());
